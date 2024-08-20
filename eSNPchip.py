@@ -238,19 +238,19 @@ else:
 
 def run_flankLen(flankLen):
     fileN = len(glob.glob('{0}/{1}-?????.fa'.format(tmpDir, prefix)))
-    probeFasta  = '{0}/probe-K{1:03}.fa'.format(tmpDir, flankLen)
-    probeDB  = '{0}/probe-K{1:03}'.format(tmpDir, flankLen)
+    probeFasta  = '{0}/{1}-probe-K{2:03}.fa'.format(tmpDir, prefix, flankLen)
+    probeDB     = '{0}/{1}-probe-K{2:03}'.format(tmpDir, prefix, flankLen)
 
     probeHandler.make_flankFasta(probeFasta, flankLen)
     kmcHandler.make_kmcDB(probeFasta, probeDB, tmpDir)
 
     def run_batch_kmc(tmpDir, prefix, flankLen, fileN, batchN):
         def run_single_kmc(fileIDX):
-            probeDB  = '{0}/probe-K{1:03}'.format(tmpDir, flankLen)
-            inFasta  = '{0}/{1}-{3:05}.fa'.format(tmpDir, prefix, flankLen, fileIDX)
-            fastqDB  = '{0}/{1}-K{2:03}-{3:05}'.format(tmpDir, prefix, flankLen, fileIDX)
-            commomDB = '{0}/{1}-K{2:03}-{3:05}-commom'.format(tmpDir, prefix, flankLen, fileIDX)
-            outFile  = '{0}/{1}-K{2:03}-{3:05}-commom.txt'.format(tmpDir, prefix, flankLen, fileIDX)
+            probeDB  = '{0}/{1}-probe-K{2:03}'.format(tmpDir, prefix, flankLen)
+            inFasta  = '{0}/{1}-fastq-{3:05}.fa'.format(tmpDir, prefix, flankLen, fileIDX)
+            fastqDB  = '{0}/{1}-fastq-K{2:03}-{3:05}'.format(tmpDir, prefix, flankLen, fileIDX)
+            commomDB = '{0}/{1}-fastq-K{2:03}-{3:05}-commom'.format(tmpDir, prefix, flankLen, fileIDX)
+            outFile  = '{0}/{1}-fastq-K{2:03}-{3:05}-commom.txt'.format(tmpDir, prefix, flankLen, fileIDX)
 
             kmcHandler.make_kmcDB(inFasta, fastqDB, tmpDir)
             kmcHandler.make_simple(fastqDB, probeDB, commomDB)
