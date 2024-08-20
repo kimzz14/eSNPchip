@@ -222,14 +222,14 @@ def split_fastq(tmpDir, prefix, lineN):
                 if fout != None: 
                     fout.close()
                 fileIDX = int(lineIDX/lineN)
-                fileName = '{0}/{1}-{2:05}.fa'.format(tmpDir, prefix, fileIDX)
+                fileName = '{0}/{1}-fastq-{2:05}.fa'.format(tmpDir, prefix, fileIDX)
                 fout = open(fileName, 'w')
         if lineIDX%4 == 1:
             fout.write('>test' + '\n')
             fout.write(line)
     fout.close()
 
-fileN = len(glob.glob('{0}/{1}-?????.fa'.format(tmpDir, prefix)))
+fileN = len(glob.glob('{0}/{1}-fastq-?????.fa'.format(tmpDir, prefix)))
 if fileN == 0:
     print('[{0}] split_fastq running ...'.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")), flush=True)
     split_fastq(tmpDir, prefix, lineN)
@@ -237,7 +237,7 @@ else:
     print('[{0}] split_fastq skip '.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")), flush=True)
 
 def run_flankLen(flankLen):
-    fileN = len(glob.glob('{0}/{1}-?????.fa'.format(tmpDir, prefix)))
+    fileN = len(glob.glob('{0}/{1}-fastq-?????.fa'.format(tmpDir, prefix)))
     probeFasta  = '{0}/{1}-probe-K{2:03}.fa'.format(tmpDir, prefix, flankLen)
     probeDB     = '{0}/{1}-probe-K{2:03}'.format(tmpDir, prefix, flankLen)
 
@@ -264,7 +264,7 @@ def run_flankLen(flankLen):
     kmcHandler.rm_kmcDB(probeDB)
 
 for flankLen in probeHandler.get_flankLen()[0:1]:
-    resultN = len(glob.glob('{0}/{1}-K{2:03}-?????-commom.txt'.format(tmpDir, prefix, flankLen)))
+    resultN = len(glob.glob('{0}/{1}-fastq-K{2:03}-?????-commom.txt'.format(tmpDir, prefix, flankLen)))
     if resultN == 0:
         print('[{0}] run_flankLen({1}) running ...'.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), flankLen), flush=True)
         run_flankLen(flankLen)
@@ -272,6 +272,6 @@ for flankLen in probeHandler.get_flankLen()[0:1]:
         print('[{0}] run_flankLen({1}) skip ...'.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), flankLen), flush=True)
 
 print('[{0} done ...'.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")), flush=True)
-fileName_LIST = glob.glob('{0}/{1}-K???-?????-commom.txt'.format(tmpDir, prefix))
+fileName_LIST = glob.glob('{0}/{1}-fastq-K???-?????-commom.txt'.format(tmpDir, prefix))
 probeHandler.read_kmcResult(fileName_LIST)
 probeHandler.write_result(prefix + '.txt')
